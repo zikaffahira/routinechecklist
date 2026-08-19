@@ -1,0 +1,1992 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Routine Tracker - Simple & Consistent Habit Building</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(156, 163, 175, 0.4);
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(107, 114, 128, 0.6);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-full flex flex-col transition-colors duration-200">
+
+    <!-- App Navigation Header -->
+    <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-30 transition-colors">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-600 flex items-center justify-center text-white shadow-md shadow-emerald-500/20">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-lg leading-tight tracking-tight text-slate-900 dark:text-white">RoutineTracker</h1>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 font-medium hidden sm:block">Consistency without complexity</p>
+                    </div>
+                </div>
+
+                <!-- Main Nav Tabs (Desktop) -->
+                <nav class="hidden md:flex space-x-1 lg:space-x-2">
+                    <button data-tab="today" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium transition-all flex items-center space-x-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                        <span>Today</span>
+                    </button>
+                    <button data-tab="weekly" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium transition-all flex items-center space-x-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" /></svg>
+                        <span>Weekly</span>
+                    </button>
+                    <button data-tab="history" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium transition-all flex items-center space-x-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <span>History</span>
+                    </button>
+                    <button data-tab="stats" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium transition-all flex items-center space-x-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                        <span>Stats & Insights</span>
+                    </button>
+                    <button data-tab="ai" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium transition-all flex items-center space-x-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                        <span>AI Report</span>
+                    </button>
+                    <button data-tab="routines" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium transition-all flex items-center space-x-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /></svg>
+                        <span>Manage Routine</span>
+                    </button>
+                </nav>
+
+                <div class="flex items-center space-x-2">
+                    <!-- Current Streak Badge -->
+                    <div id="header-streak-badge" class="hidden sm:flex items-center space-x-1.5 bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 px-3 py-1.5 rounded-full border border-amber-200 dark:border-amber-800 text-xs font-semibold">
+                        <svg class="w-4 h-4 fill-current text-amber-500" viewBox="0 0 20 20"><path d="M12.395 2.553a1 1 0 00-1.45-1.348c-1.891 2.037-3.025 3.967-3.4 5.253a9.71 9.71 0 00-.39 2.062 4.017 4.017 0 01-.822-1.282A1 1 0 004.81 7.822C3.2 10.378 3 13.04 4.3 15.35c1.47 2.613 4.29 4.15 7.42 3.65 3.52-.56 6.28-3.5 6.28-7.1 0-3.13-1.87-6.07-5.605-9.347z"/></svg>
+                        <span id="header-streak-text">0 day streak</span>
+                    </div>
+
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle-btn" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 focus:outline-none" title="Toggle Theme">
+                        <svg id="theme-icon-sun" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                        <svg id="theme-icon-moon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                    </button>
+
+                    <!-- Settings / Export Dropdown Trigger -->
+                    <button id="settings-btn" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 focus:outline-none" title="Data Backup & Reset">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Bottom Nav Bar -->
+        <div class="md:hidden border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-2 py-1.5 flex justify-around">
+            <button data-tab="today" class="mobile-nav-btn flex flex-col items-center py-1 px-2 rounded text-xs font-medium text-slate-600 dark:text-slate-400">
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                <span>Today</span>
+            </button>
+            <button data-tab="weekly" class="mobile-nav-btn flex flex-col items-center py-1 px-2 rounded text-xs font-medium text-slate-600 dark:text-slate-400">
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" /></svg>
+                <span>Weekly</span>
+            </button>
+            <button data-tab="history" class="mobile-nav-btn flex flex-col items-center py-1 px-2 rounded text-xs font-medium text-slate-600 dark:text-slate-400">
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                <span>History</span>
+            </button>
+            <button data-tab="stats" class="mobile-nav-btn flex flex-col items-center py-1 px-2 rounded text-xs font-medium text-slate-600 dark:text-slate-400">
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                <span>Stats</span>
+            </button>
+            <button data-tab="ai" class="mobile-nav-btn flex flex-col items-center py-1 px-2 rounded text-xs font-medium text-slate-600 dark:text-slate-400">
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                <span>AI</span>
+            </button>
+            <button data-tab="routines" class="mobile-nav-btn flex flex-col items-center py-1 px-2 rounded text-xs font-medium text-slate-600 dark:text-slate-400">
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /></svg>
+                <span>Edit</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Toast Notification Overlay -->
+    <div id="toast-container" class="fixed bottom-20 md:bottom-6 right-4 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+    <!-- Main Body Container -->
+    <main class="flex-grow max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- ================= TAB 1: TODAY ================= -->
+        <section id="view-today" class="tab-view hidden space-y-6">
+            <!-- Date & Header Controls -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <div class="flex items-center space-x-2 text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-1">
+                        <span id="today-is-training-day-tag" class="px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800">
+                            Training Day
+                        </span>
+                        <span id="today-day-type-text">Regular Schedule</span>
+                    </div>
+                    <h2 id="today-date-heading" class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
+                        <!-- Date filled dynamically -->
+                    </h2>
+                    <p id="today-subtitle" class="text-slate-500 dark:text-slate-400 text-sm mt-1">
+                        What do you need to accomplish today?
+                    </p>
+                </div>
+
+                <!-- Date Navigation & Quick Actions -->
+                <div class="flex flex-wrap items-center gap-2">
+                    <div class="inline-flex rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 p-1">
+                        <button id="today-prev-day" class="p-2 rounded-md hover:bg-white dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition" title="Previous Day">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                        </button>
+                        <button id="today-go-today" class="px-3 py-1 text-xs font-semibold rounded-md hover:bg-white dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 transition">
+                            Today
+                        </button>
+                        <button id="today-next-day" class="p-2 rounded-md hover:bg-white dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition" title="Next Day">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </button>
+                    </div>
+
+                    <button id="btn-mark-all-complete" class="px-3 py-2 text-xs font-medium rounded-lg bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-900 transition flex items-center space-x-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <span>Mark All Done</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Today Progress Card -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-700">
+                <div class="flex justify-between items-center mb-2">
+                    <span id="today-progress-text" class="text-sm font-semibold text-slate-700 dark:text-slate-300">0 of 0 tasks completed</span>
+                    <span id="today-progress-percent" class="text-sm font-bold text-emerald-600 dark:text-emerald-400">0%</span>
+                </div>
+                <div class="w-full h-3 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                    <div id="today-progress-bar" class="h-full bg-emerald-500 transition-all duration-500 rounded-full" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Quick Add Today Task Input -->
+            <form id="quick-add-form" class="flex gap-2">
+                <input type="text" id="quick-add-input" placeholder="Quick add a new task for today..." class="flex-grow px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm shadow-sm">
+                <button type="submit" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-medium transition shadow-sm flex items-center space-x-1 shrink-0">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    <span class="hidden sm:inline">Add Task</span>
+                </button>
+            </form>
+
+            <!-- Checklist Items -->
+            <div id="today-checklist-container" class="space-y-3">
+                <!-- Checklist cards dynamically injected here -->
+            </div>
+        </section>
+
+        <!-- ================= TAB 2: WEEKLY ================= -->
+        <section id="view-weekly" class="tab-view hidden space-y-6">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 id="weekly-range-heading" class="text-2xl font-bold text-slate-900 dark:text-white">
+                        Weekly Overview
+                    </h2>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">
+                        Track your habit consistency across the entire week.
+                    </p>
+                </div>
+                <!-- Week Controls -->
+                <div class="flex items-center space-x-2">
+                    <button id="weekly-prev-week" class="px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-sm font-medium flex items-center space-x-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                        <span>Prev Week</span>
+                    </button>
+                    <button id="weekly-current-week" class="px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-sm font-medium">
+                        This Week
+                    </button>
+                    <button id="weekly-next-week" class="px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 text-sm font-medium flex items-center space-x-1">
+                        <span>Next Week</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Weekly Summary Stats Row -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Weekly Completion</p>
+                    <p id="weekly-stat-rate" class="text-2xl font-extrabold text-emerald-600 dark:text-emerald-400 mt-1">0%</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Tasks Done / Total</p>
+                    <p id="weekly-stat-count" class="text-2xl font-extrabold text-slate-800 dark:text-slate-100 mt-1">0 / 0</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Training Sessions</p>
+                    <p id="weekly-stat-training" class="text-2xl font-extrabold text-teal-600 dark:text-teal-400 mt-1">0 / 3</p>
+                </div>
+            </div>
+
+            <!-- 7-Day Grid Container -->
+            <div id="weekly-grid-container" class="grid grid-cols-1 md:grid-cols-7 gap-3">
+                <!-- 7 days rendered dynamically -->
+            </div>
+        </section>
+
+        <!-- ================= TAB 3: HISTORY / CALENDAR ================= -->
+        <section id="view-history" class="tab-view hidden space-y-6">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Historical Log</h2>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">
+                        Select any past or present date to review completed & missed tasks.
+                    </p>
+                </div>
+                <!-- Month Navigator -->
+                <div class="flex items-center space-x-2">
+                    <button id="history-prev-month" class="p-2 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                    </button>
+                    <span id="history-month-year-label" class="text-base font-bold text-slate-800 dark:text-slate-200 min-w-[140px] text-center">August 2026</span>
+                    <button id="history-next-month" class="p-2 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Calendar Grid (2 cols) -->
+                <div class="lg:col-span-2 bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700">
+                    <div class="grid grid-cols-7 gap-1 text-center text-xs font-semibold text-slate-400 mb-2">
+                        <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                    </div>
+                    <div id="calendar-days-grid" class="grid grid-cols-7 gap-1">
+                        <!-- Days rendered dynamically -->
+                    </div>
+                </div>
+
+                <!-- Selected Date Detail Pane -->
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                    <div>
+                        <div class="border-b border-slate-100 dark:border-slate-700 pb-3 mb-4">
+                            <span id="history-detail-date-badge" class="text-xs font-semibold uppercase text-emerald-600 dark:text-emerald-400">Selected Date</span>
+                            <h3 id="history-detail-date-title" class="text-xl font-bold text-slate-900 dark:text-white mt-1">Aug 18, 2026</h3>
+                            <div class="flex items-center justify-between mt-2">
+                                <span class="text-xs text-slate-500">Completion Rate</span>
+                                <span id="history-detail-percent" class="text-sm font-bold text-emerald-600">100%</span>
+                            </div>
+                        </div>
+
+                        <div id="history-detail-list" class="space-y-2 max-h-[350px] overflow-y-auto pr-1">
+                            <!-- Tasks list for selected date -->
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700 flex justify-between">
+                        <button id="history-jump-to-today" class="text-xs font-medium text-emerald-600 hover:text-emerald-700 dark:text-emerald-400">Jump to Today</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 4: STATS & INSIGHTS ================= -->
+        <section id="view-stats" class="tab-view hidden space-y-6">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Analytics & Routine Insights</h2>
+                <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">
+                    Data-driven analysis based on your actual routine history.
+                </p>
+            </div>
+
+            <!-- Insights Banner Card -->
+            <div class="bg-gradient-to-r from-emerald-900 to-teal-900 text-white rounded-2xl p-6 shadow-md">
+                <div class="flex items-center space-x-2 text-emerald-300 text-xs font-bold uppercase tracking-wider mb-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    <span>Smart Routine Insights</span>
+                </div>
+                <div id="insights-container" class="space-y-2 text-sm sm:text-base leading-relaxed text-slate-100">
+                    <!-- Dynamic insights injected here -->
+                </div>
+            </div>
+
+            <!-- Key Metric Cards Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">Overall Rate</span>
+                    <p id="stat-overall-rate" class="text-2xl font-extrabold text-emerald-600 dark:text-emerald-400 mt-1">0%</p>
+                    <span class="text-[11px] text-slate-400">All-time tracked</span>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">Current Streak</span>
+                    <p id="stat-current-streak" class="text-2xl font-extrabold text-amber-500 mt-1">0 days</p>
+                    <span class="text-[11px] text-slate-400">Days ≥50% completed</span>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">Longest Streak</span>
+                    <p id="stat-longest-streak" class="text-2xl font-extrabold text-purple-600 dark:text-purple-400 mt-1">0 days</p>
+                    <span class="text-[11px] text-slate-400">Personal record</span>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">Training Done</span>
+                    <p id="stat-training-completed" class="text-2xl font-extrabold text-teal-600 dark:text-teal-400 mt-1">0</p>
+                    <span class="text-[11px] text-slate-400">This month</span>
+                </div>
+            </div>
+
+            <!-- Breakdown Detail Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700">
+                    <h4 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Most Consistent Habit</h4>
+                    <p id="stat-best-task" class="text-lg font-bold text-slate-900 dark:text-white">-</p>
+                    <p id="stat-best-task-rate" class="text-xs text-emerald-600 font-medium mt-1">0% completion rate</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700">
+                    <h4 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Most Missed Habit</h4>
+                    <p id="stat-missed-task" class="text-lg font-bold text-slate-900 dark:text-white">-</p>
+                    <p id="stat-missed-task-rate" class="text-xs text-rose-500 font-medium mt-1">0% miss rate</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700">
+                    <h4 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Best Day of Week</h4>
+                    <p id="stat-best-day" class="text-lg font-bold text-slate-900 dark:text-white">-</p>
+                    <p id="stat-best-day-rate" class="text-xs text-emerald-600 font-medium mt-1">Highest completion avg</p>
+                </div>
+            </div>
+
+            <!-- Weekly Completion Trend Bar Chart -->
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-1">4-Week Completion Trend</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mb-6">Percentage of planned tasks completed per week over the last month.</p>
+                <div id="chart-trend-container" class="h-48 flex items-end justify-between gap-4 pt-6 pb-2 border-b border-slate-200 dark:border-slate-700">
+                    <!-- Dynamic chart bars injected here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 5: AI REPORT ================= -->
+        <section id="view-ai" class="tab-view hidden space-y-6">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Copy Week for AI</h2>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">
+                        Generate a structured report ready to paste directly into ChatGPT, Gemini, or Claude for objective routine analysis.
+                    </p>
+                </div>
+                <!-- Week Selector -->
+                <div class="flex items-center space-x-2">
+                    <select id="ai-week-select" class="px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 text-sm font-medium focus:ring-2 focus:ring-emerald-500">
+                        <option value="0">This Week</option>
+                        <option value="1">Last Week</option>
+                        <option value="2">2 Weeks Ago</option>
+                        <option value="3">3 Weeks Ago</option>
+                    </select>
+                    <button id="btn-copy-ai-report" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-medium transition shadow-sm flex items-center space-x-2 shrink-0">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                        <span>Copy Report</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Preview Output Container -->
+            <div class="bg-slate-900 text-slate-200 rounded-2xl p-6 font-mono text-xs sm:text-sm leading-relaxed shadow-inner relative overflow-hidden">
+                <div class="flex justify-between items-center pb-3 mb-3 border-b border-slate-800 text-slate-400">
+                    <span class="text-xs uppercase font-semibold tracking-wider">AI Prompt Text Output</span>
+                    <span id="ai-copy-status" class="text-emerald-400 font-semibold hidden">Copied to clipboard!</span>
+                </div>
+                <textarea id="ai-report-textarea" readonly class="w-full bg-transparent text-slate-100 focus:outline-none resize-none font-mono text-xs sm:text-sm leading-relaxed" rows="18"></textarea>
+            </div>
+        </section>
+
+        <!-- ================= TAB 6: ROUTINE EDITOR ================= -->
+        <section id="view-routines" class="tab-view hidden space-y-6">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Routine Manager</h2>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">
+                        Customize tasks, day rules, and schedules. Changes apply going forward without erasing past history.
+                    </p>
+                </div>
+                <button id="btn-open-add-routine-modal" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-medium transition shadow-sm flex items-center space-x-2 shrink-0">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    <span>Create New Task</span>
+                </button>
+            </div>
+
+            <!-- Routine Definitions List -->
+            <div id="routines-definition-list" class="space-y-3">
+                <!-- Injected dynamically -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= MODALS ================= -->
+
+    <!-- Add/Edit Routine Modal -->
+    <div id="modal-routine" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-xl border border-slate-200 dark:border-slate-700 space-y-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
+                <h3 id="modal-routine-title" class="text-lg font-bold text-slate-900 dark:text-white">Add Routine Task</h3>
+                <button id="modal-routine-close" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <form id="routine-form" class="space-y-4">
+                <input type="hidden" id="routine-form-id" value="">
+                
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">Task Name *</label>
+                    <input type="text" id="routine-form-name" required placeholder="e.g. Move ~30 min" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-emerald-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">Description (Optional)</label>
+                    <input type="text" id="routine-form-desc" placeholder="e.g. Walk, jog, or active movement" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-emerald-500">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">Category</label>
+                        <select id="routine-form-category" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-emerald-500">
+                            <option value="Movement">Movement</option>
+                            <option value="Training">Training</option>
+                            <option value="Flexibility">Flexibility</option>
+                            <option value="Sleep">Sleep</option>
+                            <option value="Personal">Personal</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">Status</label>
+                        <select id="routine-form-active" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-emerald-500">
+                            <option value="true">Active</option>
+                            <option value="false">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Schedule Days *</label>
+                        <div class="space-x-1">
+                            <button type="button" id="btn-quick-daily" class="text-[11px] font-medium text-emerald-600 dark:text-emerald-400 hover:underline">Daily</button>
+                            <span class="text-slate-300">•</span>
+                            <button type="button" id="btn-quick-mwf" class="text-[11px] font-medium text-emerald-600 dark:text-emerald-400 hover:underline">Mon/Wed/Fri</button>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-7 gap-1 pt-1">
+                        <label class="day-checkbox-label flex flex-col items-center justify-center p-2 rounded-lg border border-slate-200 dark:border-slate-700 cursor-pointer text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800">
+                            <input type="checkbox" name="routine-days" value="0" class="sr-only">
+                            <span>Sun</span>
+                        </label>
+                        <label class="day-checkbox-label flex flex-col items-center justify-center p-2 rounded-lg border border-slate-200 dark:border-slate-700 cursor-pointer text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800">
+                            <input type="checkbox" name="routine-days" value="1" class="sr-only">
+                            <span>Mon</span>
+                        </label>
+                        <label class="day-checkbox-label flex flex-col items-center justify-center p-2 rounded-lg border border-slate-200 dark:border-slate-700 cursor-pointer text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800">
+                            <input type="checkbox" name="routine-days" value="2" class="sr-only">
+                            <span>Tue</span>
+                        </label>
+                        <label class="day-checkbox-label flex flex-col items-center justify-center p-2 rounded-lg border border-slate-200 dark:border-slate-700 cursor-pointer text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800">
+                            <input type="checkbox" name="routine-days" value="3" class="sr-only">
+                            <span>Wed</span>
+                        </label>
+                        <label class="day-checkbox-label flex flex-col items-center justify-center p-2 rounded-lg border border-slate-200 dark:border-slate-700 cursor-pointer text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800">
+                            <input type="checkbox" name="routine-days" value="4" class="sr-only">
+                            <span>Thu</span>
+                        </label>
+                        <label class="day-checkbox-label flex flex-col items-center justify-center p-2 rounded-lg border border-slate-200 dark:border-slate-700 cursor-pointer text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800">
+                            <input type="checkbox" name="routine-days" value="5" class="sr-only">
+                            <span>Fri</span>
+                        </label>
+                        <label class="day-checkbox-label flex flex-col items-center justify-center p-2 rounded-lg border border-slate-200 dark:border-slate-700 cursor-pointer text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800">
+                            <input type="checkbox" name="routine-days" value="6" class="sr-only">
+                            <span>Sat</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex justify-end space-x-2">
+                    <button type="button" id="modal-routine-cancel" class="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700">Cancel</button>
+                    <button type="submit" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium">Save Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Confirm Dialog Modal -->
+    <div id="modal-confirm" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-sm w-full p-6 shadow-xl border border-slate-200 dark:border-slate-700 text-center space-y-4">
+            <div class="w-12 h-12 rounded-full bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 mx-auto flex items-center justify-center">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            </div>
+            <div>
+                <h3 id="modal-confirm-title" class="text-base font-bold text-slate-900 dark:text-white">Are you sure?</h3>
+                <p id="modal-confirm-msg" class="text-xs text-slate-500 dark:text-slate-400 mt-1">This action cannot be undone.</p>
+            </div>
+            <div class="flex space-x-2 pt-2">
+                <button id="modal-confirm-cancel" class="flex-1 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700">Cancel</button>
+                <button id="modal-confirm-ok" class="flex-1 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings / Backup Modal -->
+    <div id="modal-settings" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200 dark:border-slate-700 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
+                <h3 class="text-base font-bold text-slate-900 dark:text-white">Data Backup & Export</h3>
+                <button id="modal-settings-close" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="space-y-3">
+                <p class="text-xs text-slate-500 dark:text-slate-400">Export your local routine data and completion logs for offline backup, or restore from a previously exported file.</p>
+                <div class="grid grid-cols-2 gap-2">
+                    <button id="btn-export-json" class="py-2.5 px-3 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 rounded-xl text-xs font-semibold transition flex items-center justify-center space-x-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                        <span>Export JSON</span>
+                    </button>
+                    <label class="py-2.5 px-3 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 rounded-xl text-xs font-semibold transition cursor-pointer flex items-center justify-center space-x-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                        <span>Import Backup</span>
+                        <input type="file" id="import-json-file" accept=".json" class="hidden">
+                    </label>
+                </div>
+                <div class="pt-3 border-t border-slate-100 dark:border-slate-700">
+                    <button id="btn-reset-default" class="w-full py-2.5 bg-rose-50 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/60 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800 rounded-xl text-xs font-semibold transition">
+                        Reset to Default Routine
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+    <script>
+        /**
+         * DEFAULT ROUTINE CONFIGURATION
+         * Meets requirement: 
+         * Daily: Move ~30 min, Stretch 5-10 min, Sleep enough
+         * Training days (Mon, Wed, Fri): Train, Stretch 5-10 min
+         */
+        const DEFAULT_ROUTINES = [
+            {
+                id: 'rt_move',
+                name: 'Move ~30 min',
+                description: 'Brisk walk, jog, cycling, or active movement',
+                category: 'Movement',
+                days: [0, 1, 2, 3, 4, 5, 6], // Daily
+                active: true,
+                order: 1,
+                createdAt: '2026-08-01'
+            },
+            {
+                id: 'rt_stretch',
+                name: 'Stretch 5–10 min',
+                description: 'Full body mobility & flexibility',
+                category: 'Flexibility',
+                days: [0, 1, 2, 3, 4, 5, 6], // Daily
+                active: true,
+                order: 2,
+                createdAt: '2026-08-01'
+            },
+            {
+                id: 'rt_sleep',
+                name: 'Sleep enough',
+                description: '7-8 hours quality restful sleep',
+                category: 'Sleep',
+                days: [0, 1, 2, 3, 4, 5, 6], // Daily
+                active: true,
+                order: 3,
+                createdAt: '2026-08-01'
+            },
+            {
+                id: 'rt_train',
+                name: 'Train',
+                description: 'Main workout session',
+                category: 'Training',
+                days: [1, 3, 5], // Monday, Wednesday, Friday
+                active: true,
+                order: 4,
+                createdAt: '2026-08-01'
+            }
+        ];
+
+        const STORAGE_KEY_ROUTINES = 'routine_tracker_definitions_v1';
+        const STORAGE_KEY_HISTORY = 'routine_tracker_history_v1';
+        const STORAGE_KEY_THEME = 'routine_tracker_theme';
+
+        // Core App State
+        let state = {
+            routines: [],
+            history: {}, // Keyed by YYYY-MM-DD
+            currentView: 'today',
+            todayDateStr: getFormattedDateString(new Date()),
+            selectedHistoryDateStr: getFormattedDateString(new Date()),
+            selectedWeeklyOffset: 0, // 0 = current week
+            historyMonth: new Date().getMonth(),
+            historyYear: new Date().getFullYear(),
+            undoStack: null
+        };
+
+        // --- DATE UTILITIES ---
+        function getFormattedDateString(date) {
+            const y = date.getFullYear();
+            const m = String(date.getMonth() + 1).padStart(2, '0');
+            const d = String(date.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
+        }
+
+        function parseDateString(dateStr) {
+            const [y, m, d] = dateStr.split('-').map(Number);
+            return new Date(y, m - 1, d);
+        }
+
+        function getDayOfWeekName(dayIndex, short = false) {
+            const daysShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const daysLong = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            return short ? daysShort[dayIndex] : daysLong[dayIndex];
+        }
+
+        function getMonthName(monthIndex) {
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            return months[monthIndex];
+        }
+
+        function formatDisplayDate(dateStr) {
+            const date = parseDateString(dateStr);
+            const dayName = getDayOfWeekName(date.getDay());
+            const monthName = getMonthName(date.getMonth());
+            return `${dayName}, ${monthName} ${date.getDate()}, ${date.getFullYear()}`;
+        }
+
+        function getStartOfWeek(date) {
+            const d = new Date(date);
+            const day = d.getDay();
+            const diff = d.getDate() - day + (day === 0 ? -6 : 1); // Monday start
+            return new Date(d.setDate(diff));
+        }
+
+        // --- PERSISTENCE ---
+        function loadStateFromStorage() {
+            try {
+                const storedRoutines = localStorage.getItem(STORAGE_KEY_ROUTINES);
+                const storedHistory = localStorage.getItem(STORAGE_KEY_HISTORY);
+
+                state.routines = storedRoutines ? JSON.parse(storedRoutines) : DEFAULT_ROUTINES;
+                state.history = storedHistory ? JSON.parse(storedHistory) : {};
+            } catch (err) {
+                console.error("Failed to load local storage:", err);
+                state.routines = DEFAULT_ROUTINES;
+                state.history = {};
+            }
+        }
+
+        function saveRoutinesToStorage() {
+            localStorage.setItem(STORAGE_KEY_ROUTINES, JSON.stringify(state.routines));
+        }
+
+        function saveHistoryToStorage() {
+            localStorage.setItem(STORAGE_KEY_HISTORY, JSON.stringify(state.history));
+        }
+
+        /**
+         * Retrieves or initializes the checklist history log for a given date string.
+         * Preserves historical data so editing/deleting tasks today does NOT mutate past logs.
+         */
+        function getOrInitDayLog(dateStr) {
+            if (state.history[dateStr]) {
+                return state.history[dateStr];
+            }
+
+            const dateObj = parseDateString(dateStr);
+            const dayOfWeek = dateObj.getDay();
+
+            // Find routines scheduled for this day of week that were created on or before this date
+            const relevantRoutines = state.routines
+                .filter(r => r.active)
+                .filter(r => r.days.includes(dayOfWeek))
+                .filter(r => !r.createdAt || r.createdAt <= dateStr)
+                .sort((a, b) => (a.order || 0) - (b.order || 0));
+
+            const tasks = relevantRoutines.map(r => ({
+                id: r.id,
+                name: r.name,
+                description: r.description || '',
+                category: r.category || 'General',
+                completed: false,
+                completedAt: null
+            }));
+
+            const dayLog = {
+                date: dateStr,
+                tasks: tasks
+            };
+
+            // Only persist if user interacts, or keep in memory
+            return dayLog;
+        }
+
+        function saveTaskCompletionStatus(dateStr, taskId, isCompleted) {
+            let dayLog = getOrInitDayLog(dateStr);
+            const taskIndex = dayLog.tasks.findIndex(t => t.id === taskId);
+
+            if (taskIndex !== -1) {
+                dayLog.tasks[taskIndex].completed = isCompleted;
+                dayLog.tasks[taskIndex].completedAt = isCompleted ? new Date().toISOString() : null;
+            } else {
+                // If it's a dynamic routine added today that wasn't in snapshot
+                const routineDef = state.routines.find(r => r.id === taskId);
+                if (routineDef) {
+                    dayLog.tasks.push({
+                        id: routineDef.id,
+                        name: routineDef.name,
+                        description: routineDef.description || '',
+                        category: routineDef.category || 'General',
+                        completed: isCompleted,
+                        completedAt: isCompleted ? new Date().toISOString() : null
+                    });
+                }
+            }
+
+            state.history[dateStr] = dayLog;
+            saveHistoryToStorage();
+            renderCurrentView();
+        }
+
+        // --- UI ROUTER & RENDERERS ---
+        function switchTab(tabId) {
+            state.currentView = tabId;
+
+            // Update tab button styles
+            document.querySelectorAll('.nav-btn, .mobile-nav-btn').forEach(btn => {
+                const isCurrent = btn.dataset.tab === tabId;
+                if (btn.classList.contains('nav-btn')) {
+                    btn.className = `nav-btn px-3 py-2 rounded-lg text-sm font-medium transition-all flex items-center space-x-2 ${
+                        isCurrent 
+                            ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 font-semibold border border-emerald-200 dark:border-emerald-800' 
+                            : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-700/50'
+                    }`;
+                } else if (btn.classList.contains('mobile-nav-btn')) {
+                    btn.className = `mobile-nav-btn flex flex-col items-center py-1 px-2 rounded text-xs font-medium ${
+                        isCurrent ? 'text-emerald-600 dark:text-emerald-400 font-bold' : 'text-slate-500 dark:text-slate-400'
+                    }`;
+                }
+            });
+
+            // Show/Hide views
+            document.querySelectorAll('.tab-view').forEach(view => {
+                view.classList.add('hidden');
+            });
+            const activeView = document.getElementById(`view-${tabId}`);
+            if (activeView) activeView.classList.remove('hidden');
+
+            renderCurrentView();
+        }
+
+        function renderCurrentView() {
+            updateStreakHeader();
+            switch (state.currentView) {
+                case 'today':
+                    renderTodayView();
+                    break;
+                case 'weekly':
+                    renderWeeklyView();
+                    break;
+                case 'history':
+                    renderHistoryView();
+                    break;
+                case 'stats':
+                    renderStatsView();
+                    break;
+                case 'ai':
+                    renderAIReportView();
+                    break;
+                case 'routines':
+                    renderRoutinesView();
+                    break;
+            }
+        }
+
+        // --- TODAY VIEW ---
+        function renderTodayView() {
+            const dateStr = state.todayDateStr;
+            const dateObj = parseDateString(dateStr);
+            const dayOfWeek = dateObj.getDay(); // 0=Sun, 1=Mon...
+            const isTrainingDay = [1, 3, 5].includes(dayOfWeek); // Mon, Wed, Fri
+
+            // Heading & Tags
+            document.getElementById('today-date-heading').textContent = formatDisplayDate(dateStr);
+            const tagEl = document.getElementById('today-is-training-day-tag');
+            if (isTrainingDay) {
+                tagEl.textContent = "Training Day";
+                tagEl.className = "px-2.5 py-0.5 rounded-full text-xs font-bold bg-teal-100 dark:bg-teal-950/80 text-teal-800 dark:text-teal-300 border border-teal-300 dark:border-teal-800";
+            } else {
+                tagEl.textContent = "Recovery / Regular Day";
+                tagEl.className = "px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700";
+            }
+
+            const isRealToday = dateStr === getFormattedDateString(new Date());
+            document.getElementById('today-day-type-text').textContent = isRealToday ? "Today's Checklist" : "Historical Checklist";
+
+            const dayLog = getOrInitDayLog(dateStr);
+            const tasks = dayLog.tasks;
+
+            const total = tasks.length;
+            const completedCount = tasks.filter(t => t.completed).length;
+            const percent = total > 0 ? Math.round((completedCount / total) * 100) : 0;
+
+            document.getElementById('today-progress-text').textContent = `${completedCount} of ${total} tasks completed`;
+            document.getElementById('today-progress-percent').textContent = `${percent}%`;
+            document.getElementById('today-progress-bar').style.width = `${percent}%`;
+
+            const container = document.getElementById('today-checklist-container');
+            container.innerHTML = '';
+
+            if (tasks.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 bg-white dark:bg-slate-800 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700">
+                        <svg class="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <p class="text-slate-600 dark:text-slate-300 font-semibold">No tasks scheduled for this day</p>
+                        <p class="text-xs text-slate-400 mt-1">Add a quick task above or configure task schedules in Routine Manager.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            tasks.forEach((task, index) => {
+                const card = document.createElement('div');
+                card.className = `p-4 rounded-2xl border transition-all duration-200 flex items-center justify-between gap-3 ${
+                    task.completed 
+                        ? 'bg-emerald-50/60 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-900/50' 
+                        : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 shadow-sm'
+                }`;
+
+                const categoryColors = {
+                    'Movement': 'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300',
+                    'Training': 'bg-teal-100 text-teal-700 dark:bg-teal-950 dark:text-teal-300',
+                    'Flexibility': 'bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300',
+                    'Sleep': 'bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300',
+                    'Personal': 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300'
+                };
+                const catBadgeClass = categoryColors[task.category] || 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300';
+
+                card.innerHTML = `
+                    <div class="flex items-center space-x-3.5 flex-grow min-w-0">
+                        <button onclick="toggleTaskCompletion('${dateStr}', '${task.id}', ${!task.completed})" class="w-6 h-6 rounded-lg border-2 flex items-center justify-center transition shrink-0 ${
+                            task.completed 
+                                ? 'bg-emerald-500 border-emerald-500 text-white' 
+                                : 'border-slate-300 dark:border-slate-600 hover:border-emerald-500'
+                        }">
+                            ${task.completed ? '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>' : ''}
+                        </button>
+                        <div class="min-w-0 flex-grow">
+                            <div class="flex items-center space-x-2">
+                                <span class="font-bold text-sm sm:text-base text-slate-800 dark:text-slate-100 truncate ${task.completed ? 'line-through text-slate-400 dark:text-slate-500' : ''}">
+                                    ${escapeHtml(task.name)}
+                                </span>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${catBadgeClass}">
+                                    ${escapeHtml(task.category)}
+                                </span>
+                            </div>
+                            ${task.description ? `<p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">${escapeHtml(task.description)}</p>` : ''}
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-1 shrink-0">
+                        <button onclick="editTodayTask('${task.id}')" class="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg" title="Edit Task">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                        </button>
+                        <button onclick="deleteTodayTask('${dateStr}', '${task.id}')" class="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg" title="Remove from Today">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                        </button>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function toggleTaskCompletion(dateStr, taskId, isCompleted) {
+            saveTaskCompletionStatus(dateStr, taskId, isCompleted);
+        }
+
+        function markAllTodayComplete() {
+            const dateStr = state.todayDateStr;
+            let dayLog = getOrInitDayLog(dateStr);
+            dayLog.tasks.forEach(t => {
+                t.completed = true;
+                t.completedAt = new Date().toISOString();
+            });
+            state.history[dateStr] = dayLog;
+            saveHistoryToStorage();
+            showToast("All tasks marked complete!");
+            renderCurrentView();
+        }
+
+        function deleteTodayTask(dateStr, taskId) {
+            let dayLog = getOrInitDayLog(dateStr);
+            const removedTask = dayLog.tasks.find(t => t.id === taskId);
+            dayLog.tasks = dayLog.tasks.filter(t => t.id !== taskId);
+            state.history[dateStr] = dayLog;
+            saveHistoryToStorage();
+
+            state.undoStack = {
+                type: 'delete_task',
+                dateStr: dateStr,
+                task: removedTask
+            };
+
+            showToast("Task removed from today.", "Undo", () => {
+                if (state.undoStack) {
+                    let log = getOrInitDayLog(state.undoStack.dateStr);
+                    log.tasks.push(state.undoStack.task);
+                    state.history[state.undoStack.dateStr] = log;
+                    saveHistoryToStorage();
+                    renderCurrentView();
+                }
+            });
+
+            renderCurrentView();
+        }
+
+        function editTodayTask(taskId) {
+            const routineDef = state.routines.find(r => r.id === taskId);
+            if (routineDef) {
+                openRoutineModal(routineDef);
+            } else {
+                switchTab('routines');
+            }
+        }
+
+        // --- WEEKLY VIEW ---
+        function renderWeeklyView() {
+            const baseDate = new Date();
+            baseDate.setDate(baseDate.getDate() + (state.selectedWeeklyOffset * 7));
+            const startOfWeek = getStartOfWeek(baseDate);
+
+            const datesOfWeek = [];
+            for (let i = 0; i < 7; i++) {
+                const d = new Date(startOfWeek);
+                d.setDate(d.getDate() + i);
+                datesOfWeek.push(getFormattedDateString(d));
+            }
+
+            const firstDate = parseDateString(datesOfWeek[0]);
+            const lastDate = parseDateString(datesOfWeek[6]);
+            document.getElementById('weekly-range-heading').textContent = `Week of ${getMonthName(firstDate.getMonth())} ${firstDate.getDate()} – ${lastDate.getDate()}, ${lastDate.getFullYear()}`;
+
+            let totalWeekTasks = 0;
+            let completedWeekTasks = 0;
+            let totalTrainingCount = 0;
+            let completedTrainingCount = 0;
+
+            const gridContainer = document.getElementById('weekly-grid-container');
+            gridContainer.innerHTML = '';
+
+            datesOfWeek.forEach((dateStr) => {
+                const dayLog = getOrInitDayLog(dateStr);
+                const dateObj = parseDateString(dateStr);
+                const dayName = getDayOfWeekName(dateObj.getDay(), true);
+                const isToday = dateStr === getFormattedDateString(new Date());
+
+                const total = dayLog.tasks.length;
+                const completed = dayLog.tasks.filter(t => t.completed).length;
+                const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+                totalWeekTasks += total;
+                completedWeekTasks += completed;
+
+                // Training calculation
+                const trainTask = dayLog.tasks.find(t => t.id === 'rt_train' || t.name.toLowerCase().includes('train'));
+                if (trainTask) {
+                    totalTrainingCount++;
+                    if (trainTask.completed) completedTrainingCount++;
+                }
+
+                const dayCard = document.createElement('div');
+                dayCard.className = `p-3.5 rounded-2xl border flex flex-col justify-between transition cursor-pointer hover:shadow-md ${
+                    isToday 
+                        ? 'bg-white dark:bg-slate-800 border-emerald-500 ring-2 ring-emerald-500/20' 
+                        : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700'
+                }`;
+                dayCard.onclick = () => {
+                    state.todayDateStr = dateStr;
+                    switchTab('today');
+                };
+
+                let taskItemsHtml = dayLog.tasks.map(t => `
+                    <div class="flex items-center space-x-1.5 text-xs truncate">
+                        <span class="${t.completed ? 'text-emerald-500' : 'text-slate-300 dark:text-slate-600'}">
+                            ${t.completed ? '✓' : '✗'}
+                        </span>
+                        <span class="${t.completed ? 'text-slate-700 dark:text-slate-300 font-medium' : 'text-slate-400 line-through'} truncate">
+                            ${escapeHtml(t.name)}
+                        </span>
+                    </div>
+                `).join('');
+
+                if (dayLog.tasks.length === 0) {
+                    taskItemsHtml = `<span class="text-xs text-slate-400 italic">No tasks</span>`;
+                }
+
+                dayCard.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-center pb-2 mb-2 border-b border-slate-100 dark:border-slate-700">
+                            <div>
+                                <span class="text-xs font-bold text-slate-500 uppercase">${dayName}</span>
+                                <p class="text-sm font-extrabold text-slate-900 dark:text-white">${dateObj.getDate()}</p>
+                            </div>
+                            <span class="text-xs font-bold px-2 py-0.5 rounded-full ${
+                                pct === 100 ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300' :
+                                pct >= 50 ? 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300' :
+                                'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-400'
+                            }">
+                                ${pct}%
+                            </span>
+                        </div>
+                        <div class="space-y-1 my-2">
+                            ${taskItemsHtml}
+                        </div>
+                    </div>
+                    <div class="pt-2 border-t border-slate-100 dark:border-slate-700 flex justify-between items-center text-[11px] text-slate-400">
+                        <span>${completed}/${total} Done</span>
+                        <span class="text-emerald-600 font-semibold hover:underline">View →</span>
+                    </div>
+                `;
+
+                gridContainer.appendChild(dayCard);
+            });
+
+            const overallPct = totalWeekTasks > 0 ? Math.round((completedWeekTasks / totalWeekTasks) * 100) : 0;
+            document.getElementById('weekly-stat-rate').textContent = `${overallPct}%`;
+            document.getElementById('weekly-stat-count').textContent = `${completedWeekTasks} / ${totalWeekTasks}`;
+            document.getElementById('weekly-stat-training').textContent = `${completedTrainingCount} / ${totalTrainingCount}`;
+        }
+
+        // --- HISTORY / CALENDAR VIEW ---
+        function renderHistoryView() {
+            const year = state.historyYear;
+            const month = state.historyMonth;
+
+            document.getElementById('history-month-year-label').textContent = `${getMonthName(month)} ${year}`;
+
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const startingDayOfWeek = firstDay.getDay(); // 0=Sun
+            const totalDaysInMonth = lastDay.getDate();
+
+            const grid = document.getElementById('calendar-days-grid');
+            grid.innerHTML = '';
+
+            // Blank slots before start of month
+            for (let i = 0; i < startingDayOfWeek; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'h-10 sm:h-12';
+                grid.appendChild(emptyCell);
+            }
+
+            // Fill days
+            for (let day = 1; day <= totalDaysInMonth; day++) {
+                const dateObj = new Date(year, month, day);
+                const dateStr = getFormattedDateString(dateObj);
+                const isSelected = dateStr === state.selectedHistoryDateStr;
+                const isToday = dateStr === getFormattedDateString(new Date());
+
+                const dayLog = getOrInitDayLog(dateStr);
+                const total = dayLog.tasks.length;
+                const completed = dayLog.tasks.filter(t => t.completed).length;
+                const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+                const dayCell = document.createElement('button');
+                dayCell.className = `h-10 sm:h-12 rounded-xl text-xs font-semibold flex flex-col items-center justify-between p-1 transition ${
+                    isSelected ? 'ring-2 ring-emerald-500 bg-emerald-500 text-white' :
+                    isToday ? 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-300' :
+                    'bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
+                }`;
+
+                let indicatorColor = 'bg-slate-300 dark:bg-slate-600';
+                if (total > 0) {
+                    if (pct === 100) indicatorColor = isSelected ? 'bg-white' : 'bg-emerald-500';
+                    else if (pct >= 50) indicatorColor = isSelected ? 'bg-amber-200' : 'bg-amber-500';
+                    else indicatorColor = isSelected ? 'bg-rose-200' : 'bg-rose-400';
+                }
+
+                dayCell.innerHTML = `
+                    <span>${day}</span>
+                    <span class="w-1.5 h-1.5 rounded-full ${indicatorColor} mb-0.5"></span>
+                `;
+
+                dayCell.onclick = () => {
+                    state.selectedHistoryDateStr = dateStr;
+                    renderHistoryView();
+                };
+
+                grid.appendChild(dayCell);
+            }
+
+            // Render detail pane
+            const selectedLog = getOrInitDayLog(state.selectedHistoryDateStr);
+            document.getElementById('history-detail-date-title').textContent = formatDisplayDate(state.selectedHistoryDateStr);
+            
+            const total = selectedLog.tasks.length;
+            const completed = selectedLog.tasks.filter(t => t.completed).length;
+            const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+            document.getElementById('history-detail-percent').textContent = `${pct}% (${completed}/${total})`;
+
+            const listEl = document.getElementById('history-detail-list');
+            listEl.innerHTML = '';
+
+            if (selectedLog.tasks.length === 0) {
+                listEl.innerHTML = `<p class="text-xs text-slate-400 italic py-4 text-center">No task records for this date.</p>`;
+            } else {
+                selectedLog.tasks.forEach(t => {
+                    const item = document.createElement('div');
+                    item.className = "flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs";
+                    item.innerHTML = `
+                        <div class="flex items-center space-x-2">
+                            <button onclick="toggleTaskCompletion('${state.selectedHistoryDateStr}', '${t.id}', ${!t.completed})" class="w-4 h-4 rounded flex items-center justify-center text-[10px] ${t.completed ? 'bg-emerald-500 text-white' : 'border border-slate-400'}">
+                                ${t.completed ? '✓' : ''}
+                            </button>
+                            <span class="${t.completed ? 'text-slate-800 dark:text-slate-200 font-medium' : 'text-slate-400 line-through'}">${escapeHtml(t.name)}</span>
+                        </div>
+                        <span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${t.completed ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300' : 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300'}">
+                            ${t.completed ? 'Completed' : 'Missed'}
+                        </span>
+                    `;
+                    listEl.appendChild(item);
+                });
+            }
+        }
+
+        // --- STATS & ROUTINE INSIGHTS ENGINE ---
+        function calculateStats() {
+            const allDates = Object.keys(state.history).sort();
+            
+            // If less than 1 entry in history, return default empty state
+            let totalTasksPlanned = 0;
+            let totalTasksCompleted = 0;
+            let currentStreak = 0;
+            let longestStreak = 0;
+            let tempStreak = 0;
+            let taskStats = {}; // { taskId: { planned: 0, completed: 0, name: '' } }
+            let dayOfWeekStats = { 0: { p: 0, c: 0 }, 1: { p: 0, c: 0 }, 2: { p: 0, c: 0 }, 3: { p: 0, c: 0 }, 4: { p: 0, c: 0 }, 5: { p: 0, c: 0 }, 6: { p: 0, c: 0 } };
+            let trainingCompletedMonth = 0;
+
+            const now = new Date();
+            const currentMonthStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+
+            // Evaluate last 60 days
+            const evalDates = [];
+            for (let i = 60; i >= 0; i--) {
+                const d = new Date();
+                d.setDate(d.getDate() - i);
+                evalDates.push(getFormattedDateString(d));
+            }
+
+            evalDates.forEach(dateStr => {
+                const log = getOrInitDayLog(dateStr);
+                const dateObj = parseDateString(dateStr);
+                const dow = dateObj.getDay();
+
+                const total = log.tasks.length;
+                const completed = log.tasks.filter(t => t.completed).length;
+
+                if (total > 0) {
+                    totalTasksPlanned += total;
+                    totalTasksCompleted += completed;
+
+                    dayOfWeekStats[dow].p += total;
+                    dayOfWeekStats[dow].c += completed;
+
+                    log.tasks.forEach(t => {
+                        if (!taskStats[t.name]) taskStats[t.name] = { planned: 0, completed: 0 };
+                        taskStats[t.name].planned++;
+                        if (t.completed) taskStats[t.name].completed++;
+
+                        // Check training
+                        if (dateStr.startsWith(currentMonthStr) && (t.id === 'rt_train' || t.name.toLowerCase().includes('train')) && t.completed) {
+                            trainingCompletedMonth++;
+                        }
+                    });
+
+                    // Streak calculation (>=50% completed counts as active streak day)
+                    if (completed / total >= 0.5) {
+                        tempStreak++;
+                        if (tempStreak > longestStreak) longestStreak = tempStreak;
+                    } else {
+                        tempStreak = 0;
+                    }
+                }
+            });
+
+            // Calculate current streak backwards from today
+            let calcCurrent = 0;
+            for (let i = evalDates.length - 1; i >= 0; i--) {
+                const dateStr = evalDates[i];
+                const log = getOrInitDayLog(dateStr);
+                const total = log.tasks.length;
+                const completed = log.tasks.filter(t => t.completed).length;
+                if (total > 0 && (completed / total >= 0.5)) {
+                    calcCurrent++;
+                } else if (dateStr === getFormattedDateString(new Date()) && completed === 0) {
+                    // today not completed yet, don't break yesterday's streak yet
+                    continue;
+                } else {
+                    break;
+                }
+            }
+            currentStreak = calcCurrent;
+
+            // Find best / worst tasks
+            let bestTask = '-';
+            let bestTaskRate = 0;
+            let worstTask = '-';
+            let worstTaskMissRate = 0;
+
+            Object.keys(taskStats).forEach(taskName => {
+                const s = taskStats[taskName];
+                if (s.planned >= 3) {
+                    const rate = (s.completed / s.planned) * 100;
+                    if (rate > bestTaskRate || bestTask === '-') {
+                        bestTaskRate = rate;
+                        bestTask = taskName;
+                    }
+                    const missRate = 100 - rate;
+                    if (missRate > worstTaskMissRate || worstTask === '-') {
+                        worstTaskMissRate = missRate;
+                        worstTask = taskName;
+                    }
+                }
+            });
+
+            // Find best day of week
+            let bestDayIndex = 0;
+            let bestDayAvg = -1;
+            for (let i = 0; i < 7; i++) {
+                const s = dayOfWeekStats[i];
+                if (s.p > 0) {
+                    const avg = s.c / s.p;
+                    if (avg > bestDayAvg) {
+                        bestDayAvg = avg;
+                        bestDayIndex = i;
+                    }
+                }
+            }
+
+            const overallRate = totalTasksPlanned > 0 ? Math.round((totalTasksCompleted / totalTasksPlanned) * 100) : 0;
+
+            return {
+                totalPlanned: totalTasksPlanned,
+                totalCompleted: totalTasksCompleted,
+                overallRate,
+                currentStreak,
+                longestStreak,
+                bestTask,
+                bestTaskRate: Math.round(bestTaskRate),
+                worstTask,
+                worstTaskMissRate: Math.round(worstTaskMissRate),
+                bestDayName: getDayOfWeekName(bestDayIndex),
+                trainingCompletedMonth
+            };
+        }
+
+        function renderStatsView() {
+            const stats = calculateStats();
+
+            document.getElementById('stat-overall-rate').textContent = `${stats.overallRate}%`;
+            document.getElementById('stat-current-streak').textContent = `${stats.currentStreak} ${stats.currentStreak === 1 ? 'day' : 'days'}`;
+            document.getElementById('stat-longest-streak').textContent = `${stats.longestStreak} ${stats.longestStreak === 1 ? 'day' : 'days'}`;
+            document.getElementById('stat-training-completed').textContent = `${stats.trainingCompletedMonth}`;
+
+            document.getElementById('stat-best-task').textContent = stats.bestTask;
+            document.getElementById('stat-best-task-rate').textContent = `${stats.bestTaskRate}% completion rate`;
+
+            document.getElementById('stat-missed-task').textContent = stats.worstTask;
+            document.getElementById('stat-missed-task-rate').textContent = `${stats.worstTaskMissRate}% miss rate`;
+
+            document.getElementById('stat-best-day').textContent = stats.bestDayName;
+
+            // Generate Insights text based on real stored data
+            const insightsContainer = document.getElementById('insights-container');
+            if (stats.totalPlanned < 5) {
+                insightsContainer.innerHTML = `<p>Not enough history data yet. Keep tracking your routine for a full week to unlock personalized insights!</p>`;
+            } else {
+                insightsContainer.innerHTML = `
+                    <p>• You completed <strong class="text-emerald-300">${stats.overallRate}%</strong> of your routine tasks over the past month.</p>
+                    <p>• You are most consistent on <strong class="text-teal-300">${stats.bestDayName}s</strong>.</p>
+                    ${stats.worstTask !== '-' ? `<p>• <strong class="text-amber-300">${escapeHtml(stats.worstTask)}</strong> is currently your most frequently missed task.</p>` : ''}
+                    <p>• You completed <strong class="text-emerald-300">${stats.trainingCompletedMonth}</strong> training sessions this month.</p>
+                    <p>• Your active momentum stands at a <strong class="text-amber-300">${stats.currentStreak}-day streak</strong>.</p>
+                `;
+            }
+
+            // Render 4-Week Trend Chart
+            renderTrendChart();
+        }
+
+        function renderTrendChart() {
+            const chartContainer = document.getElementById('chart-trend-container');
+            chartContainer.innerHTML = '';
+
+            const weeks = [];
+            for (let w = 3; w >= 0; w--) {
+                const baseDate = new Date();
+                baseDate.setDate(baseDate.getDate() - (w * 7));
+                const startOfWeek = getStartOfWeek(baseDate);
+
+                let planned = 0;
+                let completed = 0;
+
+                for (let i = 0; i < 7; i++) {
+                    const d = new Date(startOfWeek);
+                    d.setDate(d.getDate() + i);
+                    const log = getOrInitDayLog(getFormattedDateString(d));
+                    planned += log.tasks.length;
+                    completed += log.tasks.filter(t => t.completed).length;
+                }
+
+                const rate = planned > 0 ? Math.round((completed / planned) * 100) : 0;
+                weeks.push({
+                    label: w === 0 ? 'This Week' : `${w}w ago`,
+                    rate: rate
+                });
+            }
+
+            weeks.forEach(w => {
+                const col = document.createElement('div');
+                col.className = 'flex-1 flex flex-col items-center h-full justify-end';
+                col.innerHTML = `
+                    <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 mb-1">${w.rate}%</span>
+                    <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-t-lg overflow-hidden flex items-end h-32">
+                        <div class="w-full bg-gradient-to-t from-emerald-600 to-teal-500 transition-all duration-500 rounded-t-lg" style="height: ${Math.max(w.rate, 4)}%"></div>
+                    </div>
+                    <span class="text-[11px] font-medium text-slate-500 dark:text-slate-400 mt-2">${w.label}</span>
+                `;
+                chartContainer.appendChild(col);
+            });
+        }
+
+        function updateStreakHeader() {
+            const stats = calculateStats();
+            document.getElementById('header-streak-text').textContent = `${stats.currentStreak} day streak`;
+        }
+
+        // --- AI REPORT GENERATOR ---
+        function renderAIReportView() {
+            const weekOffset = parseInt(document.getElementById('ai-week-select').value) || 0;
+            const baseDate = new Date();
+            baseDate.setDate(baseDate.getDate() - (weekOffset * 7));
+            const startOfWeek = getStartOfWeek(baseDate);
+
+            const datesOfWeek = [];
+            for (let i = 0; i < 7; i++) {
+                const d = new Date(startOfWeek);
+                d.setDate(d.getDate() + i);
+                datesOfWeek.push(getFormattedDateString(d));
+            }
+
+            const firstDate = parseDateString(datesOfWeek[0]);
+            const lastDate = parseDateString(datesOfWeek[6]);
+            const headerDateRange = `WEEK OF ${getMonthName(firstDate.getMonth()).toUpperCase()} ${firstDate.getDate()}–${lastDate.getDate()}, ${lastDate.getFullYear()}`;
+
+            let reportLines = [];
+            reportLines.push(headerDateRange);
+            reportLines.push("");
+
+            let totalTasks = 0;
+            let completedTasks = 0;
+            let dayCompletionMap = {};
+            let taskMissCounts = {};
+            let trainingCount = 0;
+
+            datesOfWeek.forEach(dateStr => {
+                const log = getOrInitDayLog(dateStr);
+                const dateObj = parseDateString(dateStr);
+                const dayName = getDayOfWeekName(dateObj.getDay()).toUpperCase();
+
+                reportLines.push(dayName);
+
+                let dayPlanned = log.tasks.length;
+                let dayDone = 0;
+
+                log.tasks.forEach(t => {
+                    totalTasks++;
+                    if (t.completed) {
+                        completedTasks++;
+                        dayDone++;
+                        reportLines.push(`✓ ${t.name}`);
+                    } else {
+                        reportLines.push(`✗ ${t.name}`);
+                        taskMissCounts[t.name] = (taskMissCounts[t.name] || 0) + 1;
+                    }
+
+                    if ((t.id === 'rt_train' || t.name.toLowerCase().includes('train')) && t.completed) {
+                        trainingCount++;
+                    }
+                });
+
+                dayCompletionMap[dayName] = dayPlanned > 0 ? (dayDone / dayPlanned) : 0;
+                reportLines.push("");
+            });
+
+            // Find best day
+            let bestDay = "N/A";
+            let bestRate = -1;
+            Object.keys(dayCompletionMap).forEach(d => {
+                if (dayCompletionMap[d] > bestRate) {
+                    bestRate = dayCompletionMap[d];
+                    bestDay = d;
+                }
+            });
+
+            // Find missed most often
+            let missedMost = "None";
+            let maxMiss = 0;
+            Object.keys(taskMissCounts).forEach(tName => {
+                if (taskMissCounts[tName] > maxMiss) {
+                    maxMiss = taskMissCounts[tName];
+                    missedMost = tName;
+                }
+            });
+
+            const overallPct = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+            reportLines.push("WEEK SUMMARY");
+            reportLines.push(`Completion: ${completedTasks}/${totalTasks} tasks (${overallPct}%)`);
+            reportLines.push(`Best day: ${bestDay}`);
+            reportLines.push(`Missed most often: ${missedMost}`);
+            reportLines.push(`Training completed: ${trainingCount}/3`);
+            reportLines.push("");
+            reportLines.push("Please analyze this routine objectively. Identify:");
+            reportLines.push("1. What I'm consistently doing well");
+            reportLines.push("2. What I keep missing");
+            reportLines.push("3. Which habits appear unrealistic");
+            reportLines.push("4. Whether my routine is balanced");
+            reportLines.push("5. The simplest change that would improve my consistency");
+            reportLines.push("6. Any obvious patterns in my behavior");
+            reportLines.push("Do not give generic motivational advice.");
+
+            document.getElementById('ai-report-textarea').value = reportLines.join("\n");
+        }
+
+        function copyAIReportToClipboard() {
+            const textarea = document.getElementById('ai-report-textarea');
+            textarea.select();
+            document.execCommand('copy');
+
+            const status = document.getElementById('ai-copy-status');
+            status.classList.remove('hidden');
+            setTimeout(() => status.classList.add('hidden'), 2500);
+
+            showToast("Report copied to clipboard!");
+        }
+
+        // --- ROUTINE DEFINITIONS MANAGER ---
+        function renderRoutinesView() {
+            const container = document.getElementById('routines-definition-list');
+            container.innerHTML = '';
+
+            const sortedRoutines = [...state.routines].sort((a, b) => (a.order || 0) - (b.order || 0));
+
+            if (sortedRoutines.length === 0) {
+                container.innerHTML = `<p class="text-slate-400 text-sm py-8 text-center">No routine tasks configured. Click "Create New Task" to add one.</p>`;
+                return;
+            }
+
+            sortedRoutines.forEach((r, idx) => {
+                const card = document.createElement('div');
+                card.className = "bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4";
+
+                const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                const scheduledDaysText = r.days.length === 7 ? 'Every day' : r.days.map(d => dayNames[d]).join(', ');
+
+                card.innerHTML = `
+                    <div class="flex items-start space-x-3 min-w-0">
+                        <div class="flex flex-col space-y-1 pt-1">
+                            <button onclick="reorderRoutine(${idx}, -1)" ${idx === 0 ? 'disabled class="opacity-30"' : ''} class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+                            </button>
+                            <button onclick="reorderRoutine(${idx}, 1)" ${idx === sortedRoutines.length - 1 ? 'disabled class="opacity-30"' : ''} class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                        </div>
+                        <div>
+                            <div class="flex items-center space-x-2">
+                                <h4 class="font-bold text-slate-900 dark:text-white text-base">${escapeHtml(r.name)}</h4>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${r.active ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300' : 'bg-slate-100 text-slate-500'}">
+                                    ${r.active ? 'Active' : 'Inactive'}
+                                </span>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
+                                    ${escapeHtml(r.category || 'General')}
+                                </span>
+                            </div>
+                            ${r.description ? `<p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">${escapeHtml(r.description)}</p>` : ''}
+                            <p class="text-xs text-emerald-600 dark:text-emerald-400 font-medium mt-1">Schedule: ${scheduledDaysText}</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-2 self-end sm:self-center">
+                        <button onclick="duplicateRoutine('${r.id}')" class="px-2.5 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600 transition">
+                            Duplicate
+                        </button>
+                        <button onclick="openRoutineModalById('${r.id}')" class="px-2.5 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600 transition">
+                            Edit
+                        </button>
+                        <button onclick="confirmDeleteRoutine('${r.id}')" class="px-2.5 py-1.5 text-xs font-semibold rounded-lg bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800 hover:bg-rose-100 transition">
+                            Delete
+                        </button>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function reorderRoutine(index, direction) {
+            const sorted = [...state.routines].sort((a, b) => (a.order || 0) - (b.order || 0));
+            const newIndex = index + direction;
+            if (newIndex < 0 || newIndex >= sorted.length) return;
+
+            const temp = sorted[index];
+            sorted[index] = sorted[newIndex];
+            sorted[newIndex] = temp;
+
+            sorted.forEach((r, idx) => {
+                r.order = idx + 1;
+            });
+
+            state.routines = sorted;
+            saveRoutinesToStorage();
+            renderRoutinesView();
+        }
+
+        function duplicateRoutine(id) {
+            const target = state.routines.find(r => r.id === id);
+            if (!target) return;
+
+            const newRoutine = {
+                ...target,
+                id: 'rt_' + Date.now(),
+                name: `${target.name} (Copy)`,
+                order: state.routines.length + 1,
+                createdAt: getFormattedDateString(new Date())
+            };
+
+            state.routines.push(newRoutine);
+            saveRoutinesToStorage();
+            showToast("Routine duplicated.");
+            renderRoutinesView();
+        }
+
+        function openRoutineModalById(id) {
+            const target = state.routines.find(r => r.id === id);
+            openRoutineModal(target);
+        }
+
+        function openRoutineModal(routine = null) {
+            document.getElementById('routine-form-id').value = routine ? routine.id : '';
+            document.getElementById('routine-form-name').value = routine ? routine.name : '';
+            document.getElementById('routine-form-desc').value = routine ? routine.description || '' : '';
+            document.getElementById('routine-form-category').value = routine ? routine.category || 'Movement' : 'Movement';
+            document.getElementById('routine-form-active').value = routine ? String(routine.active) : 'true';
+
+            document.getElementById('modal-routine-title').textContent = routine ? 'Edit Routine Task' : 'Add Routine Task';
+
+            const checkboxes = document.querySelectorAll('input[name="routine-days"]');
+            checkboxes.forEach(cb => {
+                const dayVal = parseInt(cb.value);
+                cb.checked = routine ? routine.days.includes(dayVal) : true;
+                updateDayCheckboxStyle(cb);
+            });
+
+            document.getElementById('modal-routine').classList.remove('hidden');
+        }
+
+        function closeRoutineModal() {
+            document.getElementById('modal-routine').classList.add('hidden');
+        }
+
+        function updateDayCheckboxStyle(cb) {
+            const label = cb.closest('label');
+            if (cb.checked) {
+                label.className = "day-checkbox-label flex flex-col items-center justify-center p-2 rounded-lg border cursor-pointer text-xs font-bold bg-emerald-50 border-emerald-500 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300";
+            } else {
+                label.className = "day-checkbox-label flex flex-col items-center justify-center p-2 rounded-lg border border-slate-200 dark:border-slate-700 cursor-pointer text-xs font-medium text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800";
+            }
+        }
+
+        function confirmDeleteRoutine(id) {
+            const target = state.routines.find(r => r.id === id);
+            if (!target) return;
+
+            document.getElementById('modal-confirm-title').textContent = `Delete "${target.name}"?`;
+            document.getElementById('modal-confirm-msg').textContent = "This will remove the task definition from future schedules. Historical completion logs will remain intact.";
+
+            const modal = document.getElementById('modal-confirm');
+            modal.classList.remove('hidden');
+
+            document.getElementById('modal-confirm-ok').onclick = () => {
+                state.routines = state.routines.filter(r => r.id !== id);
+                saveRoutinesToStorage();
+                modal.classList.add('hidden');
+                showToast("Routine task deleted.");
+                renderRoutinesView();
+            };
+            document.getElementById('modal-confirm-cancel').onclick = () => {
+                modal.classList.add('hidden');
+            };
+        }
+
+        // --- UI & EVENT BINDINGS ---
+        function initEventListeners() {
+            // Tab clicks
+            document.querySelectorAll('[data-tab]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const tab = e.currentTarget.dataset.tab;
+                    switchTab(tab);
+                });
+            });
+
+            // Theme toggle
+            document.getElementById('theme-toggle-btn').addEventListener('click', toggleTheme);
+
+            // Settings button
+            document.getElementById('settings-btn').addEventListener('click', () => {
+                document.getElementById('modal-settings').classList.remove('hidden');
+            });
+            document.getElementById('modal-settings-close').addEventListener('click', () => {
+                document.getElementById('modal-settings').classList.add('hidden');
+            });
+
+            // Backup & Export buttons
+            document.getElementById('btn-export-json').addEventListener('click', exportJSONBackup);
+            document.getElementById('import-json-file').addEventListener('change', importJSONBackup);
+            document.getElementById('btn-reset-default').addEventListener('click', resetToDefaults);
+
+            // Today Date Controls
+            document.getElementById('today-prev-day').addEventListener('click', () => {
+                const d = parseDateString(state.todayDateStr);
+                d.setDate(d.getDate() - 1);
+                state.todayDateStr = getFormattedDateString(d);
+                renderCurrentView();
+            });
+            document.getElementById('today-next-day').addEventListener('click', () => {
+                const d = parseDateString(state.todayDateStr);
+                d.setDate(d.getDate() + 1);
+                state.todayDateStr = getFormattedDateString(d);
+                renderCurrentView();
+            });
+            document.getElementById('today-go-today').addEventListener('click', () => {
+                state.todayDateStr = getFormattedDateString(new Date());
+                renderCurrentView();
+            });
+            document.getElementById('btn-mark-all-complete').addEventListener('click', markAllTodayComplete);
+
+            // Quick Add Task Form
+            document.getElementById('quick-add-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const input = document.getElementById('quick-add-input');
+                const val = input.value.trim();
+                if (!val) return;
+
+                const newId = 'rt_' + Date.now();
+                const dateObj = parseDateString(state.todayDateStr);
+                const newRoutine = {
+                    id: newId,
+                    name: val,
+                    description: 'Quick task',
+                    category: 'Personal',
+                    days: [0, 1, 2, 3, 4, 5, 6],
+                    active: true,
+                    order: state.routines.length + 1,
+                    createdAt: state.todayDateStr
+                };
+
+                state.routines.push(newRoutine);
+                saveRoutinesToStorage();
+                input.value = '';
+                showToast("Task created!");
+                renderCurrentView();
+            });
+
+            // Weekly View Controls
+            document.getElementById('weekly-prev-week').addEventListener('click', () => {
+                state.selectedWeeklyOffset--;
+                renderWeeklyView();
+            });
+            document.getElementById('weekly-next-week').addEventListener('click', () => {
+                state.selectedWeeklyOffset++;
+                renderWeeklyView();
+            });
+            document.getElementById('weekly-current-week').addEventListener('click', () => {
+                state.selectedWeeklyOffset = 0;
+                renderWeeklyView();
+            });
+
+            // History Controls
+            document.getElementById('history-prev-month').addEventListener('click', () => {
+                state.historyMonth--;
+                if (state.historyMonth < 0) {
+                    state.historyMonth = 11;
+                    state.historyYear--;
+                }
+                renderHistoryView();
+            });
+            document.getElementById('history-next-month').addEventListener('click', () => {
+                state.historyMonth++;
+                if (state.historyMonth > 11) {
+                    state.historyMonth = 0;
+                    state.historyYear++;
+                }
+                renderHistoryView();
+            });
+            document.getElementById('history-jump-to-today').addEventListener('click', () => {
+                const now = new Date();
+                state.historyMonth = now.getMonth();
+                state.historyYear = now.getFullYear();
+                state.selectedHistoryDateStr = getFormattedDateString(now);
+                renderHistoryView();
+            });
+
+            // AI Report Controls
+            document.getElementById('ai-week-select').addEventListener('change', renderAIReportView);
+            document.getElementById('btn-copy-ai-report').addEventListener('click', copyAIReportToClipboard);
+
+            // Routine Modal Listeners
+            document.getElementById('btn-open-add-routine-modal').addEventListener('click', () => openRoutineModal(null));
+            document.getElementById('modal-routine-close').addEventListener('click', closeRoutineModal);
+            document.getElementById('modal-routine-cancel').addEventListener('click', closeRoutineModal);
+
+            // Quick Day Selectors
+            document.getElementById('btn-quick-daily').addEventListener('click', () => {
+                document.querySelectorAll('input[name="routine-days"]').forEach(cb => {
+                    cb.checked = true;
+                    updateDayCheckboxStyle(cb);
+                });
+            });
+            document.getElementById('btn-quick-mwf').addEventListener('click', () => {
+                document.querySelectorAll('input[name="routine-days"]').forEach(cb => {
+                    cb.checked = [1, 3, 5].includes(parseInt(cb.value));
+                    updateDayCheckboxStyle(cb);
+                });
+            });
+
+            document.querySelectorAll('input[name="routine-days"]').forEach(cb => {
+                cb.addEventListener('change', (e) => updateDayCheckboxStyle(e.target));
+            });
+
+            // Routine Form Submit
+            document.getElementById('routine-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const id = document.getElementById('routine-form-id').value;
+                const name = document.getElementById('routine-form-name').value.trim();
+                const desc = document.getElementById('routine-form-desc').value.trim();
+                const category = document.getElementById('routine-form-category').value;
+                const active = document.getElementById('routine-form-active').value === 'true';
+
+                const checkedDays = Array.from(document.querySelectorAll('input[name="routine-days"]:checked')).map(cb => parseInt(cb.value));
+
+                if (checkedDays.length === 0) {
+                    showToast("Please select at least one day for the task.");
+                    return;
+                }
+
+                if (id) {
+                    // Update existing definition
+                    const target = state.routines.find(r => r.id === id);
+                    if (target) {
+                        target.name = name;
+                        target.description = desc;
+                        target.category = category;
+                        target.active = active;
+                        target.days = checkedDays;
+                    }
+                } else {
+                    // Create new
+                    const newRoutine = {
+                        id: 'rt_' + Date.now(),
+                        name: name,
+                        description: desc,
+                        category: category,
+                        days: checkedDays,
+                        active: active,
+                        order: state.routines.length + 1,
+                        createdAt: getFormattedDateString(new Date())
+                    };
+                    state.routines.push(newRoutine);
+                }
+
+                saveRoutinesToStorage();
+                closeRoutineModal();
+                showToast("Task saved successfully!");
+                renderCurrentView();
+            });
+        }
+
+        // --- THEME & UTILITIES ---
+        function initTheme() {
+            const savedTheme = localStorage.getItem(STORAGE_KEY_THEME);
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.documentElement.classList.add('dark');
+                document.getElementById('theme-icon-sun').classList.remove('hidden');
+            } else {
+                document.documentElement.classList.remove('dark');
+                document.getElementById('theme-icon-moon').classList.remove('hidden');
+            }
+        }
+
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem(STORAGE_KEY_THEME, isDark ? 'dark' : 'light');
+
+            document.getElementById('theme-icon-sun').classList.toggle('hidden', !isDark);
+            document.getElementById('theme-icon-moon').classList.toggle('hidden', isDark);
+        }
+
+        function showToast(message, actionLabel = null, actionFn = null) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = "pointer-events-auto bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 px-4 py-3 rounded-xl shadow-lg border border-slate-700 dark:border-slate-300 flex items-center space-x-3 text-xs sm:text-sm font-medium transition duration-300 transform translate-y-2 opacity-0";
+
+            toast.innerHTML = `
+                <span>${escapeHtml(message)}</span>
+                ${actionLabel ? `<button id="toast-action-btn" class="font-bold text-emerald-400 dark:text-emerald-600 hover:underline shrink-0">${escapeHtml(actionLabel)}</button>` : ''}
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            if (actionLabel && actionFn) {
+                toast.querySelector('#toast-action-btn').onclick = () => {
+                    actionFn();
+                    toast.remove();
+                };
+            }
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>"']/g, function(m) {
+                return {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#039;'
+                }[m];
+            });
+        }
+
+        // --- BACKUP & EXPORT ---
+        function exportJSONBackup() {
+            const backupData = {
+                version: 1,
+                exportedAt: new Date().toISOString(),
+                routines: state.routines,
+                history: state.history
+            };
+
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `routine_backup_${getFormattedDateString(new Date())}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            showToast("Backup downloaded.");
+        }
+
+        function importJSONBackup(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (imported && imported.routines && imported.history) {
+                        state.routines = imported.routines;
+                        state.history = imported.history;
+                        saveRoutinesToStorage();
+                        saveHistoryToStorage();
+                        document.getElementById('modal-settings').classList.add('hidden');
+                        showToast("Data imported successfully!");
+                        renderCurrentView();
+                    } else {
+                        showToast("Invalid backup file format.");
+                    }
+                } catch (err) {
+                    showToast("Error parsing backup file.");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function resetToDefaults() {
+            if (confirm("Reset all routines and clear historical data?")) {
+                state.routines = DEFAULT_ROUTINES;
+                state.history = {};
+                saveRoutinesToStorage();
+                saveHistoryToStorage();
+                document.getElementById('modal-settings').classList.add('hidden');
+                showToast("Reset to default routine.");
+                renderCurrentView();
+            }
+        }
+
+        // --- BOOTSTRAP APP ---
+        window.onload = function() {
+            initTheme();
+            loadStateFromStorage();
+            initEventListeners();
+            switchTab('today');
+        };
+    </script>
+</body>
+</html>
